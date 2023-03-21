@@ -18,8 +18,43 @@ function insertionSort(arr) {
   Return the sorted array
   */
 
-  // Your code here
+  const array = [...arr];
+  const sorted = [];
+
+  while (array.length > 0) {
+    console.log(sorted.join(',')); // for chai spy
+    const popped = array.pop();
+
+    // sorted empty or has only 1 value
+    if (sorted.length === 0) {
+      sorted.push(popped);
+    } else if (sorted.length === 1) {
+      if (sorted[0] > popped) {
+        sorted.splice(0, 0, popped);
+      } else {
+        sorted.push(popped);
+      }
+    } else {
+      // sorted has more than 1 value
+      for (let i = sorted.length - 1; i > 0; i--) {
+        if (sorted[i - 1] < popped) {
+          sorted.splice(i, 0, popped);
+          i = 0;
+        }
+
+        // popped is smaller than all numbers in sorted
+        if (i === 1 && sorted[i - 1] > popped) {
+          sorted.splice(0, 0, popped);
+        }
+      }
+    }
+  }
+
+  return sorted;
 }
+
+// const arr = [2,4,6,8,1,3,5,7,9];
+// console.log(insertionSort(arr));
 
 // In-place Insertion Sort
 // Mutates the original array
@@ -40,7 +75,49 @@ function insertionSortInPlace(arr) {
   Return the mutated array
   */
 
-  // Your code here
+  let div = 0;
+
+  while (div < arr.length) {
+    // console.log(arr.join(','));
+
+    if (div === 0) {
+      // do nothing
+    } else if (div === 1) {
+      if (div[1] < div[0]) {
+        // swap
+        const temp = div[1];
+        div[1] = div[0];
+        div[0] = temp;
+      }
+    } else {
+      // all other scenarios
+      let spliced = arr.splice(div, 1)[0];
+      for (let i = div; i > 0; i--) {
+        if (arr[i - 1] < spliced) {
+          arr.splice(i, 0, spliced);
+          i = 0;
+        }
+
+        // spliced is smaller than all numbers in sorted
+        if (i === 1 && arr[i - 1] > spliced) {
+          arr.splice(0, 0, spliced);
+        }
+      }
+    }
+
+    // increment divider
+    div++;
+
+    // for chai spy
+    console.log(arr.join(','));
+  }
+
+  return arr;
 }
+
+// const arr = [2,4,6,8,1,3,5,7,9];
+
+// console.log(insertionSortInPlace(arr));
+// console.log(arr.splice(2, 1));
 
 module.exports = [insertionSort, insertionSortInPlace];
